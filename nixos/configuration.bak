@@ -1,0 +1,199 @@
+# System config file
+{
+ inputs,
+ outputs,
+ config,
+ lib,
+ pkgs,
+ ...
+}: {
+  imports =
+    [ #Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+                                    
+# virtualisation.virtualbox.host.enable = true;
+# virtualisation.virtualbox.host.enableExtensionPack = true;
+# users.extraGroups.vboxusers.members = [ "jssim" ];
+                     
+# virtualisation.virtualbox.guest.enable = true;
+# virtualisation.virtualbox.guest.draganddrop = true;
+
+    nixpkgs.config.allowUnfree = true;          
+
+    services.xserver.xkb.layout = "us";
+    services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+    services.printing.enable = true;
+
+    nix.settings.experimental-features = [
+           "nix-command"
+           "flakes"
+	];
+
+    sound.enable = true;
+
+    services.libinput.enable = true;
+
+    users.users.jssim = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ]; 
+      packages = with pkgs; [
+	nodejs
+	gimp
+	age
+	sshs
+	anki
+	atac
+	termshark
+	portal
+        tree
+	selectdefaultapplication
+	neovim
+	git
+	ytfzf
+	typer
+	pass
+	cmatrix
+	cmus
+	fastfetch
+	gcc
+	nwg-panel
+	kitty       
+	kitty-themes
+	dunst
+	godot3
+	tuir
+	hyprpaper
+	htb-toolkit
+	ani-cli
+	libsecret
+	openvpn
+	nmap
+	wluma
+	wlsunset
+	hyprdim 
+	flameshot                        
+	hyprkeys 
+	brightnessctl
+	wl-clipboard
+	obsidian
+	acpi
+	ntfs3g
+	wineWowPackages.staging
+	wineWowPackages.waylandFull
+	khal
+	vdirsyncer
+	yazi
+	devtodo
+	imgp
+	peaclock
+	ntopng
+	timetrap
+	unzip
+	discord
+	discordo
+	cmake
+	imv
+	bitwarden-cli
+	librewolf
+	calibre
+	python39
+	python39Packages.pandas
+	python39Packages.beautifulsoup4
+	python39Packages.requests
+	yt-dlp
+	imagemagick
+	koboldcpp
+	ffmpeg-full
+	libreoffice-qt
+        hunspell
+        hunspellDicts.uk_UA
+        hunspellDicts.th_TH
+	checkpwn
+	];
+    };
+
+services.displayManager.sddm = {
+package = pkgs.lib.mkForce pkgs.libsForQt5.sddm;
+extraPackages = pkgs.lib.mkForce [
+    pkgs.libsForQt5.qt5.qtbase
+    pkgs.libsForQt5.qt5.qtdeclarative
+    pkgs.libsForQt5.qt5.qtquickcontrols
+    pkgs.libsForQt5.qt5.qtmultimedia
+    pkgs.libsForQt5.qt5.qtgraphicaleffects
+  ];
+enable = true;
+settings = {
+    Theme =  {
+    Current="sddm-lain-wired-theme";
+    ThemeDir="/usr/share/sddm/themes/";
+    };
+  };
+};
+
+nixpkgs.config.qt5 = {
+  enable = true;
+};
+
+ security.rtkit.enable = true;
+ services.pipewire = {
+	enable = true;
+	alsa.enable = true;
+	alsa.support32Bit = true;
+	pulse.enable = true;
+  };
+
+    environment.systemPackages = with pkgs; [
+      vim 
+      wget
+      pkgs.pass-secret-service
+      pkgs.gnome.gnome-keyring
+      inetutils
+      wireplumber
+      easyeffects
+      calf
+      lsp-plugins
+      zam-plugins
+      mda_lv2
+    ];
+
+boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.device = "nodev";
+    networking.networkmanager.enable = true;  # 
+
+    time.timeZone = "America/New_York";
+
+	fonts.packages = with pkgs; [
+		nerdfonts
+	];
+
+    i18n.defaultLocale = "en_US.UTF-8";
+    console = {
+      font = "Lat2-Terminus16";
+      useXkbConfig = true; 
+    };
+
+    services.xserver.enable = true;
+
+    networking.hostName = "chateau-dlf";
+   
+ #  Some programs need SUID wrappers, can be configured further or are
+ # started in user sessions.
+ #  programs.mtr.enable = true;
+ #  programs.gnupg.agent = {
+ #    enable = true;
+ #    enableSSHSupport = true;
+    programs.hyprland.enable = true;  
+	programs.thunar.enable = true;
+
+    services.openssh.enable = true;
+   networking.firewall.enable = true;
+
+    system.copySystemConfiguration = true;
+  system.stateVersion = "23.11"; # Did you read the comment?
+
+}
+	
