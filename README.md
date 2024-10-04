@@ -1,0 +1,2 @@
+- Very new to Nix
+- Barebones setup for study purposes and improve later
